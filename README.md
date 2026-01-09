@@ -1,7 +1,6 @@
 # 📘 TUGAS AKHIR
 
-## 🧪 Rancang Bangun Sistem Kontrol Likuefaksi–Sakarifikasi  
-### Bioetanol Pati Singkong Berbasis ESP32
+## 🧪 Rancang Bangun Sistem Kontrol Likuefaksi–Sakarifikasi Bioetanol Pati Singkong Berbasis ESP32
 
 ---
 
