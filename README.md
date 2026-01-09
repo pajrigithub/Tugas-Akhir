@@ -1,9 +1,10 @@
-# Code-TikTok
+# 📘 TUGAS AKHIR
 
-Kumpulan source code untuk video TikTok.  
+## 🧪 Rancang Bangun Sistem Kontrol Likuefaksi–Sakarifikasi  
+### Bioetanol Pati Singkong Berbasis ESP32
 
-## 📌 Cara Menggunakan
+---
 
-1. Cek folder sesuai dengan project yang ada di video TikTok.  
-2. Download bagian **code** lalu buka menggunakan **Arduino IDE**.  
-3. Untuk setup atau konfigurasi, silakan baca file **README.md** di masing-masing folder.  
+## 📌 Deskripsi Singkat
+Penelitian ini berfokus pada perancangan dan implementasi **sistem kontrol proses likuefaksi dan sakarifikasi bioetanol berbahan baku pati singkong** menggunakan **ESP32 dan Raspberry pi 4** sebagai pengendali utama.  
+Sistem dirancang untuk memonitor dan mengontrol parameter proses secara otomatis guna meningkatkan kestabilan, efisiensi, dan akurasi proses produksi bioetanol.
