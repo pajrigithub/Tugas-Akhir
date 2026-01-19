@@ -1,38 +1,84 @@
-#include <AccelStepper.h>
-
 /* ===================== PIN CONFIG ===================== */
-#define STEP_PIN    16
-#define DIR_PIN     15
-#define ENABLE_PIN  14
+const int STEP_PIN   = 18;
+const int DIR_PIN    = 17;
+const int ENABLE_PIN = 4;
 
-/* ===================== OBJECT ===================== */
-AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
+/* ===================== SETTING & VAR ===================== */
+const int stepDelay = 5000;      // Kecepatan
+const int MAX_LANGKAH_FISIK = 55; // Batas gerak motor sebenarnya
+int posisiLangkahSekarang = 0;   // Menyimpan posisi dalam satuan LANGKAH (0-50)
 
-/* ===================== SETUP ===================== */
 void setup() {
+  Serial.begin(115200);
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
   pinMode(ENABLE_PIN, OUTPUT);
-  digitalWrite(ENABLE_PIN, LOW);   // Enable DRV8825
 
-  stepper.setMaxSpeed(2000);       // step/detik
-  stepper.setAcceleration(1000);
+  digitalWrite(ENABLE_PIN, HIGH); // Standby (OFF)
+  
+  Serial.println("--- KONTROL VALVE (INPUT 0-100% -> GERAK 0-50 STEP) ---");
+  Serial.println("Ketik 0-100 untuk posisi, 'K' untuk kalibrasi titik 0.");
+  Serial.println("-------------------------------------------------------");
 }
 
-/* ===================== LOOP ===================== */
 void loop() {
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n');
+    input.trim();
 
-  // ====== MAJU 100 STEP ======
-  stepper.moveTo(100);             // posisi target +100
-  while (stepper.distanceToGo() != 0) {
-    stepper.run();
+    if (input == "K" || input == "k") {
+      posisiLangkahSekarang = 0;
+      Serial.println(">>>> KALIBRASI: Posisi sekarang dianggap 0% (Tertutup).");
+    } 
+    else {
+      int inputPersen = input.toInt();
+
+      // Batasi input user agar tetap di 0-100
+      if (inputPersen < 0) inputPersen = 0;
+      if (inputPersen > 100) inputPersen = 100;
+
+      // PEMETAAN (MAPPING): Mengubah 0-100 menjadi 0-50
+      // Rumus: (input * MAX_LANGKAH) / 100
+      int targetLangkah = (inputPersen * MAX_LANGKAH_FISIK) / 100;
+
+      Serial.print(">>>> Input: "); Serial.print(inputPersen); Serial.print("%");
+      Serial.print(" | Target Fisik: "); Serial.print(targetLangkah); Serial.println(" step");
+
+      gerakKeLangkah(targetLangkah);
+    }
+  }
+}
+
+/* ===================== FUNGSI GERAK FISIK ===================== */
+void gerakKeLangkah(int targetLangkah) {
+  int selisih = targetLangkah - posisiLangkahSekarang;
+
+  if (selisih == 0) {
+    Serial.println("Posisi sudah sesuai.");
+    return;
   }
 
-  delay(1000);                     // jeda 1 detik
+  // Tentukan Arah
+  digitalWrite(DIR_PIN, (selisih > 0) ? HIGH : LOW);
 
-  // ====== MUNDUR 100 STEP ======
-  stepper.moveTo(0);               // balik ke posisi awal
-  while (stepper.distanceToGo() != 0) {
-    stepper.run();
+  // Aktifkan Driver
+  digitalWrite(ENABLE_PIN, LOW);
+  delay(5); 
+
+  // Jalankan Motor
+  int jumlahGerak = abs(selisih);
+  for (int i = 0; i < jumlahGerak; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(stepDelay);
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(stepDelay);
   }
 
-  delay(2000);                     // jeda sebelum ulang
+  // Simpan posisi langkah terakhir
+  posisiLangkahSekarang = targetLangkah;
+
+  // Matikan Driver agar dingin
+  digitalWrite(ENABLE_PIN, HIGH);
+  
+  Serial.println("Gerakan Selesai. Driver Standby.");
 }
