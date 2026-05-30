@@ -17,16 +17,23 @@ void setup() {
 
 void loop() {
   // Contoh: Menjalankan motor dengan kecepatan 200 (sekitar 80%)
-  ledcWrite(motorPin1, 255);
-  ledcWrite(motorPin2, 255);
+  ledcWrite(motorPin1, 0);
+  ledcWrite(motorPin2, 0);
+
+
+  Serial.println("Motor OFF");
+  delay(2000);  // Berhenti 2 deti
+
+  ledcWrite(motorPin1, 100);
+  ledcWrite(motorPin2, 100);
 
 
   Serial.println("Motor ON - Kecepatan 255");
-  delay(5000);  // Jalan 5 detik
+  delay(2000);  // Jalan 5 detik
 
   // Mematikan motor
-  ledcWrite(motorPin1, 0);
-  ledcWrite(motorPin2, 0);
+  ledcWrite(motorPin1, 255);
+  ledcWrite(motorPin2, 255);
 
 
   Serial.println("Motor OFF");

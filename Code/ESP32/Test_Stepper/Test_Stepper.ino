@@ -1,10 +1,10 @@
 /* ===================== PIN CONFIG ===================== */
-const int STEP_PIN   = 18;
-const int DIR_PIN    = 17;
-const int ENABLE_PIN = 4;
+const int STEP_PIN   = 38;
+const int DIR_PIN    = 42;
+const int ENABLE_PIN = 2;
 
 /* ===================== SETTING & VAR ===================== */
-const int stepDelay = 5000;      // Kecepatan
+const int stepDelay = 2500;      // Kecepatan
 const int MAX_LANGKAH_FISIK = 55; // Batas gerak motor sebenarnya
 int posisiLangkahSekarang = 0;   // Menyimpan posisi dalam satuan LANGKAH (0-50)
 
@@ -59,7 +59,7 @@ void gerakKeLangkah(int targetLangkah) {
   }
 
   // Tentukan Arah
-  digitalWrite(DIR_PIN, (selisih > 0) ? HIGH : LOW);
+  digitalWrite(DIR_PIN, (selisih > 0) ? LOW : HIGH);
 
   // Aktifkan Driver
   digitalWrite(ENABLE_PIN, LOW);

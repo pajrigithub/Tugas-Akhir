@@ -1,0 +1,68 @@
+[System]
+Name='Fuzzy_Likuefaksi2'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=25
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Error'
+Range=[-10 60]
+NumMFs=5
+MF1='NB':'trapmf',[-10 -10 -6 -2]
+MF2='NM':'trimf',[-6 -3 0]
+MF3='ZE':'trimf',[-2 0 2]
+MF4='PM':'trimf',[0 15 35]
+MF5='PB':'trapmf',[25 40 60 60]
+
+[Input2]
+Name='Delta_Error'
+Range=[-1 1]
+NumMFs=5
+MF1='NB':'trapmf',[-1 -1 -0.7 -0.4]
+MF2='mf2':'trimf',[-0.7 -0.4 0]
+MF3='ZE':'trimf',[-0.3 0 0.3]
+MF4='PM':'trimf',[0 0.4 0.7]
+MF5='PB':'trapmf',[0.4 0.7 1 1]
+
+[Output1]
+Name='Stepper_Kompor'
+Range=[0 3]
+NumMFs=4
+MF1='Mati':'trapmf',[0 0 0.5 1]
+MF2='Kecil':'trimf',[0.5 1 1.5]
+MF3='Sedang':'trimf',[1 2 2.5]
+MF4='Besar':'trapmf',[2 2.5 3 3]
+
+[Rules]
+1 1, 1 (1) : 1
+1 2, 1 (1) : 1
+1 3, 1 (1) : 1
+1 4, 1 (1) : 1
+1 5, 1 (1) : 1
+2 1, 1 (1) : 1
+2 2, 1 (1) : 1
+2 3, 1 (1) : 1
+2 4, 2 (1) : 1
+2 5, 2 (1) : 1
+3 1, 1 (1) : 1
+3 2, 2 (1) : 1
+3 3, 2 (1) : 1
+3 4, 3 (1) : 1
+3 5, 3 (1) : 1
+4 1, 3 (1) : 1
+4 2, 3 (1) : 1
+4 3, 4 (1) : 1
+4 4, 4 (1) : 1
+4 5, 4 (1) : 1
+5 1, 4 (1) : 1
+5 2, 4 (1) : 1
+5 3, 4 (1) : 1
+5 4, 4 (1) : 1
+5 5, 4 (1) : 1
